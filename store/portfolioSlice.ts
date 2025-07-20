@@ -52,16 +52,12 @@ const portfolioSlice = createSlice({
       state.experiences = state.experiences.filter(exp => exp.id !== action.payload);
     },
     addProject: (state, action: PayloadAction<Omit<Project, 'id'>>) => {
-      // Don't persist the icon React element
-      const { icon, ...rest } = action.payload;
-      state.projects.push({ ...rest, id: `proj${Date.now()}` });
+      state.projects.push({ ...action.payload, id: `proj${Date.now()}` });
     },
     updateProject: (state, action: PayloadAction<Project>) => {
       const index = state.projects.findIndex(p => p.id === action.payload.id);
       if (index !== -1) {
-        // Don't persist the icon React element
-        const { icon, ...rest } = action.payload;
-        state.projects[index] = rest;
+        state.projects[index] = action.payload;
       }
     },
     deleteProject: (state, action: PayloadAction<string>) => {

@@ -37,7 +37,6 @@ export const INITIAL_PROJECTS: Project[] = [
     description: 'Developed a full-stack AI-powered course creation platform that allows users to generate personalized coding courses based on their interests and skill level. Integrated Gemini AI to process user input and instantly generate course outlines, tailored learning paths, and topic sequences. Implemented YouTube API integration to automatically embed relevant videos for each course module, enhancing the learning experience.',
     liveLink: 'https://example.com',
     githubLink: 'https://github.com',
-    icon: React.createElement(CodeIcon)
   },
   {
     id: 'proj2',
@@ -46,7 +45,6 @@ export const INITIAL_PROJECTS: Project[] = [
     description: 'Developed a SaaS platform that simulates mock interviews using Llama AI, providing personalized interview practice. Real-time AI evaluation provides feedback on communication, clarity, and technical accuracy. Able to reduce interview anxiety for 78% of users.',
     liveLink: 'https://example.com',
     githubLink: 'https://github.com',
-    icon: React.createElement(CodeIcon)
   },
   {
     id: 'proj3',
@@ -54,7 +52,6 @@ export const INITIAL_PROJECTS: Project[] = [
     techStack: 'MERN stack, ML',
     description: 'Developed a real-time, chat-based dating application that allows users of opposite genders to discover profiles randomly and initiate conversations. Integrated AI-powered Gender Verification using live webcam feed and facial recognition to ensure platform authenticity. Implemented 2-Factor Authentication using Aadhaar or any government-issued ID for enhanced user security and verification.',
     githubLink: 'https://github.com',
-    icon: React.createElement(CodeIcon)
   },
     {
     id: 'proj4',
@@ -62,7 +59,6 @@ export const INITIAL_PROJECTS: Project[] = [
     techStack: 'Flask, ML, NLP, MySQL, React.js, Tailwind CSS',
     description: 'Developed and deployed a full-stack healthcare support platform integrating AI and NLP for emergency response and medical report analysis. Built scalable REST API endpoints to ensure fast and reliable communication between the frontend and backend. Trained an AI-powered emergency response agent capable of analyzing patient inputs in real-time and suggesting immediate actions or escalation.',
     githubLink: 'https://github.com',
-    icon: React.createElement(CodeIcon)
   },
 ];
 

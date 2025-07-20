@@ -89,7 +89,7 @@ const AdminDashboard: React.FC = () => {
         if (typeof text !== 'string') throw new Error("File could not be read");
         const data = JSON.parse(text);
         dispatch(setPortfolio(data));
-        alert('Data imported successfully! You can now continue editing.');
+        alert('Data imported successfully! Your changes have been saved to your browser.');
       } catch (error) {
         console.error('Error importing data:', error);
         alert('Failed to import data. Please ensure it is a valid portfolio JSON file.');
@@ -236,13 +236,13 @@ const DataManagementSection: React.FC<{onExport: ()=>void, onImport: (e: React.C
           </div>
           <div className="border-t pt-6">
             <h3 className="text-lg font-semibold mb-2">Import Data</h3>
-            <p className="text-sm text-muted-foreground mb-4">Load portfolio content from a previously exported JSON file. This will overwrite any changes you've made in this session.</p>
+            <p className="text-sm text-muted-foreground mb-4">Load portfolio content from a previously exported JSON file. This will overwrite any changes currently saved in your browser.</p>
             <input type="file" accept=".json" onChange={onImport} className="hidden" ref={importInputRef} />
             <Button variant="outline" onClick={() => importInputRef.current?.click()}>Import from JSON</Button>
           </div>
         </CardContent>
         <CardFooter>
-          <p className="text-xs text-muted-foreground">Note: Since data is no longer saved in your browser, imported data will be lost on page reload. Use this feature to continue editing across sessions before exporting the final version.</p>
+          <p className="text-xs text-muted-foreground">Note: Your changes are automatically saved in your browser. Use the Export button to create a file with your final changes for deployment.</p>
         </CardFooter>
       </Card>
     </div>

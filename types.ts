@@ -15,7 +15,6 @@ export interface Project {
   techStack: string;
   liveLink?: string;
   githubLink?: string;
-  icon?: React.ReactElement;
 }
 
 export interface Certification {
