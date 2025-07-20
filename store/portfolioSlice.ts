@@ -20,10 +20,22 @@ const initialState: PortfolioState = {
   certifications: INITIAL_CERTIFICATIONS,
 };
 
+type ImportExportPortfolioState = Omit<PortfolioState, 'messages'>;
+
+
 const portfolioSlice = createSlice({
   name: 'portfolio',
   initialState,
   reducers: {
+    setPortfolio: (state, action: PayloadAction<ImportExportPortfolioState>) => {
+      if (action.payload.about && action.payload.experiences && action.payload.projects && action.payload.blogs && action.payload.certifications) {
+        state.about = action.payload.about;
+        state.experiences = action.payload.experiences;
+        state.projects = action.payload.projects;
+        state.blogs = action.payload.blogs;
+        state.certifications = action.payload.certifications;
+      }
+    },
     updateAbout: (state, action: PayloadAction<typeof INITIAL_ABOUT>) => {
       state.about = action.payload;
     },
@@ -91,6 +103,7 @@ const portfolioSlice = createSlice({
 });
 
 export const { 
+    setPortfolio,
     updateAbout,
     addExperience, updateExperience, deleteExperience,
     addProject, updateProject, deleteProject,

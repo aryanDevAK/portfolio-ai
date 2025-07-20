@@ -4,8 +4,7 @@ import App from './App';
 import { HashRouter } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './store';
+import { store } from './store';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -16,13 +15,11 @@ const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <HashRouter>
-          <ThemeProvider>
-            <App />
-          </ThemeProvider>
-        </HashRouter>
-      </PersistGate>
+      <HashRouter>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </HashRouter>
     </Provider>
   </React.StrictMode>
 );

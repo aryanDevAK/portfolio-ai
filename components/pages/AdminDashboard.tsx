@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { 
+    setPortfolio,
     updateAbout, addExperience, updateExperience, deleteExperience,
     addProject, updateProject, deleteProject,
     addBlog, updateBlog, deleteBlog,
@@ -14,6 +15,7 @@ import { SparklesIcon } from '../IconComponents';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type EditableItem = Experience | Project | Blog | Certification | null;
+type DashboardSection = AdminSection | 'data';
 
 const pageAnimationProps = {
   initial: { opacity: 0, y: 20 },
@@ -23,12 +25,13 @@ const pageAnimationProps = {
 };
 
 const AdminDashboard: React.FC = () => {
-  const [activeSection, setActiveSection] = useState<AdminSection>('experience');
+  const [activeSection, setActiveSection] = useState<DashboardSection>('experience');
   const [editingItem, setEditingItem] = useState<EditableItem>(null);
   const dispatch = useAppDispatch();
+  const portfolioState = useAppSelector(state => state.portfolio);
   const {
     about, experiences, projects, blogs, messages, certifications
-  } = useAppSelector(state => state.portfolio);
+  } = portfolioState;
 
 
   const [formData, setFormData] = useState<any>({});
@@ -61,6 +64,43 @@ const AdminDashboard: React.FC = () => {
     setEditingItem(null);
   };
   
+  const handleExport = () => {
+    const { messages, ...exportData } = portfolioState;
+    const jsonString = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'portfolio-data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target?.result;
+        if (typeof text !== 'string') throw new Error("File could not be read");
+        const data = JSON.parse(text);
+        dispatch(setPortfolio(data));
+        alert('Data imported successfully! You can now continue editing.');
+      } catch (error) {
+        console.error('Error importing data:', error);
+        alert('Failed to import data. Please ensure it is a valid portfolio JSON file.');
+      }
+    };
+    reader.readAsText(file);
+    // Reset file input value to allow importing the same file again
+    event.target.value = '';
+  };
+
+
   const renderSection = () => {
     switch (activeSection) {
       case 'experience': return <CrudSection title="Experience" items={experiences} onEdit={handleEditClick} onDelete={(id) => dispatch(deleteExperience(id))} formFields={['title', 'company', 'duration', 'description']} onAddNew={(item) => dispatch(addExperience(item))} />;
@@ -69,6 +109,7 @@ const AdminDashboard: React.FC = () => {
       case 'messages': return <MessagesSection messages={messages} onDelete={(id) => dispatch(deleteMessage(id))} />;
       case 'about': return <AboutSection about={about} onEdit={handleEditClick} />;
       case 'certifications': return <CrudSection title="Certifications" items={certifications} onEdit={handleEditClick} onDelete={(id) => dispatch(deleteCertification(id))} formFields={['name', 'issuer', 'isAward']} onAddNew={(item) => dispatch(addCertification(item))} />;
+      case 'data': return <DataManagementSection onExport={handleExport} onImport={handleImport} />;
       default: return null;
     }
   };
@@ -83,6 +124,7 @@ const AdminDashboard: React.FC = () => {
         <TabButton section="certifications" activeSection={activeSection} setActiveSection={setActiveSection}>Certs/Awards</TabButton>
         <TabButton section="blogs" activeSection={activeSection} setActiveSection={setActiveSection}>Blogs</TabButton>
         <TabButton section="messages" activeSection={activeSection} setActiveSection={setActiveSection}>Messages</TabButton>
+        <TabButton section="data" activeSection={activeSection} setActiveSection={setActiveSection}>Data Management</TabButton>
       </div>
 
       <AnimatePresence mode="wait">
@@ -105,6 +147,7 @@ const AdminDashboard: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
+            onClick={() => setEditingItem(null)}
           >
             <motion.div
               className="w-full max-w-2xl"
@@ -112,6 +155,7 @@ const AdminDashboard: React.FC = () => {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.95, y: 30, opacity: 0 }}
               transition={{ type: "spring" as const, stiffness: 200, damping: 25 }}
+              onClick={(e) => e.stopPropagation()}
             >
               <Card>
                 <CardHeader><CardTitle>Edit {activeSection}</CardTitle></CardHeader>
@@ -161,7 +205,7 @@ const AdminDashboard: React.FC = () => {
   );
 };
 
-const TabButton: React.FC<{ section: AdminSection, activeSection: AdminSection, setActiveSection: (s: AdminSection) => void, children: React.ReactNode }> = ({ section, activeSection, setActiveSection, children }) => (
+const TabButton: React.FC<{ section: DashboardSection, activeSection: DashboardSection, setActiveSection: (s: DashboardSection) => void, children: React.ReactNode }> = ({ section, activeSection, setActiveSection, children }) => (
   <button
     onClick={() => setActiveSection(section)}
     className={`py-2 px-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeSection === section ? 'border-primary text-primary' : 'border-transparent text-muted-foreground hover:text-primary'}`}
@@ -169,6 +213,41 @@ const TabButton: React.FC<{ section: AdminSection, activeSection: AdminSection, 
     {children}
   </button>
 );
+
+const DataManagementSection: React.FC<{onExport: ()=>void, onImport: (e: React.ChangeEvent<HTMLInputElement>)=>void}> = ({onExport, onImport}) => {
+  const importInputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold mb-4">Data Management</h2>
+      <Card>
+        <CardHeader>
+          <CardTitle>Export & Import Portfolio Data</CardTitle>
+          <CardDescription>
+            To make your changes visible to all users, export the data and give the generated JSON file to a developer to update the live site.
+            Importing allows you to load previously saved data to continue your work.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Export Data</h3>
+            <p className="text-sm text-muted-foreground mb-4">Download all portfolio content (About, Experience, Projects, Certifications, Blogs) as a single JSON file. Contact messages will not be included.</p>
+            <Button onClick={onExport}>Export to JSON</Button>
+          </div>
+          <div className="border-t pt-6">
+            <h3 className="text-lg font-semibold mb-2">Import Data</h3>
+            <p className="text-sm text-muted-foreground mb-4">Load portfolio content from a previously exported JSON file. This will overwrite any changes you've made in this session.</p>
+            <input type="file" accept=".json" onChange={onImport} className="hidden" ref={importInputRef} />
+            <Button variant="outline" onClick={() => importInputRef.current?.click()}>Import from JSON</Button>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <p className="text-xs text-muted-foreground">Note: Since data is no longer saved in your browser, imported data will be lost on page reload. Use this feature to continue editing across sessions before exporting the final version.</p>
+        </CardFooter>
+      </Card>
+    </div>
+  );
+};
 
 
 const CrudSection: React.FC<{title:string, items: any[], onEdit: (item:any)=>void, onDelete: (id:string)=>void, formFields: string[], onAddNew: (item:any)=>void}> = ({title, items, onEdit, onDelete, formFields, onAddNew}) => {
