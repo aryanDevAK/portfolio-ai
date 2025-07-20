@@ -1,9 +1,14 @@
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { INITIAL_ABOUT, INITIAL_EXPERIENCES, INITIAL_PROJECTS, INITIAL_BLOGS, INITIAL_MESSAGES, INITIAL_CERTIFICATIONS } from '../constants';
 import type { Experience, Project, Blog, ContactMessage, Certification } from '../types';
 
 interface PortfolioState {
-  about: typeof INITIAL_ABOUT;
+  about: {
+    name: string;
+    title: string;
+    bio: string;
+    heroImage: string;
+  };
   experiences: Experience[];
   projects: Project[];
   blogs: Blog[];
@@ -12,12 +17,12 @@ interface PortfolioState {
 }
 
 const initialState: PortfolioState = {
-  about: INITIAL_ABOUT,
-  experiences: INITIAL_EXPERIENCES,
-  projects: INITIAL_PROJECTS,
-  blogs: INITIAL_BLOGS,
-  messages: INITIAL_MESSAGES,
-  certifications: INITIAL_CERTIFICATIONS,
+  about: { name: '', title: '', bio: '', heroImage: '' },
+  experiences: [],
+  projects: [],
+  blogs: [],
+  messages: [],
+  certifications: [],
 };
 
 type ImportExportPortfolioState = Omit<PortfolioState, 'messages'>;
@@ -28,6 +33,7 @@ const portfolioSlice = createSlice({
   initialState,
   reducers: {
     setPortfolio: (state, action: PayloadAction<ImportExportPortfolioState>) => {
+      // Ensure all expected keys exist in the payload before updating
       if (action.payload.about && action.payload.experiences && action.payload.projects && action.payload.blogs && action.payload.certifications) {
         state.about = action.payload.about;
         state.experiences = action.payload.experiences;
@@ -36,7 +42,7 @@ const portfolioSlice = createSlice({
         state.certifications = action.payload.certifications;
       }
     },
-    updateAbout: (state, action: PayloadAction<typeof INITIAL_ABOUT>) => {
+    updateAbout: (state, action: PayloadAction<PortfolioState['about']>) => {
       state.about = action.payload;
     },
     addExperience: (state, action: PayloadAction<Omit<Experience, 'id'>>) => {

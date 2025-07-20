@@ -1,98 +1,19 @@
+
 import type { Experience, Project, Blog, ContactMessage, Certification } from './types';
-import { CodeIcon } from './components/IconComponents';
-import React from 'react';
+
+// This file is intentionally left with minimal data.
+// All portfolio content is now loaded from public/data.json
+// to create a single source of truth that can be updated and redeployed.
 
 export const INITIAL_ABOUT = {
-    name: "Aryan Khatri",
-    title: "Software Developer",
-    bio: `Full Stack Software Developer with expertise in building SAAS products, AI integrated platforms and Automation Software and strong knowledge of OOPS, Agile methodologies, API Development and Integrations and User oriented interfaces. Proven ability to design, code, test, and debug software applications. Expertise in version control using Git and Github. Excellent communication and learning agility skills. Ability to quickly learn new tools and technologies.
-    
-Email: aryankhatri.forwork@gmail.com | Phone: +91 78277-39709
-Links: [LinkedIn](https://linkedin.com) | [Portfolio](https://portfolio.com) | [Github](https://github.com) | [Skill Badges](https://skillbadges.com)`,
-    heroImage: "https://picsum.photos/seed/aryan-khatri/500/500"
+    name: "User",
+    title: "Developer",
+    bio: ``,
+    heroImage: ""
 };
 
-export const INITIAL_EXPERIENCES: Experience[] = [
-  {
-    id: 'exp1',
-    title: 'Summer Trainee',
-    company: 'Intel Corporation',
-    duration: 'June 2024 – July 2024',
-    description: '• Trained in foundational concepts of Artificial Intelligence (AI), Machine Learning (ML), and Natural Language Processing (NLP) under the theme "AI for Future Workforce."\n• Applied training to a real-world project focused on AI in Fintech, utilizing ML and NLP techniques.\n• Completed end-to-end project lifecycle—research, development, and reporting within 2 weeks.\n• Achieved 95% project success rate through effective implementation and analysis.\n• Published a detailed report showcasing project insights, methodology, and outcomes.',
-  },
-  {
-    id: 'exp2',
-    title: 'SDE Project Intern',
-    company: 'Infosys',
-    duration: 'March 2024 - June 2024',
-    description: '• Trained in detailed concepts of Agile methodology, SCRUM, Software Development, Python, Optical Character Recognition (OCR), and Natural Language Processing (NLP).\n• Collaborated in a 25-member Agile team to develop an OCR-driven cheque processing system for banks, resulting in a 90% improvement in operational efficiency.\n• Presented project outcomes to senior stakeholders, showcasing strong communication and presentation skills.',
-  },
-];
-
-export const INITIAL_PROJECTS: Project[] = [
-  {
-    id: 'proj1',
-    name: 'AI Course Pilot',
-    techStack: 'Next.js, PostgreSQL, Gemini AI',
-    description: 'Developed a full-stack AI-powered course creation platform that allows users to generate personalized coding courses based on their interests and skill level. Integrated Gemini AI to process user input and instantly generate course outlines, tailored learning paths, and topic sequences. Implemented YouTube API integration to automatically embed relevant videos for each course module, enhancing the learning experience.',
-    liveLink: 'https://example.com',
-    githubLink: 'https://github.com',
-  },
-  {
-    id: 'proj2',
-    name: 'AI Mock Mate',
-    techStack: 'Next.js, PostgreSQL, Llama AI',
-    description: 'Developed a SaaS platform that simulates mock interviews using Llama AI, providing personalized interview practice. Real-time AI evaluation provides feedback on communication, clarity, and technical accuracy. Able to reduce interview anxiety for 78% of users.',
-    liveLink: 'https://example.com',
-    githubLink: 'https://github.com',
-  },
-  {
-    id: 'proj3',
-    name: 'Veil – Chat based Dating App',
-    techStack: 'MERN stack, ML',
-    description: 'Developed a real-time, chat-based dating application that allows users of opposite genders to discover profiles randomly and initiate conversations. Integrated AI-powered Gender Verification using live webcam feed and facial recognition to ensure platform authenticity. Implemented 2-Factor Authentication using Aadhaar or any government-issued ID for enhanced user security and verification.',
-    githubLink: 'https://github.com',
-  },
-    {
-    id: 'proj4',
-    name: 'Medixify – AI for Healthcare',
-    techStack: 'Flask, ML, NLP, MySQL, React.js, Tailwind CSS',
-    description: 'Developed and deployed a full-stack healthcare support platform integrating AI and NLP for emergency response and medical report analysis. Built scalable REST API endpoints to ensure fast and reliable communication between the frontend and backend. Trained an AI-powered emergency response agent capable of analyzing patient inputs in real-time and suggesting immediate actions or escalation.',
-    githubLink: 'https://github.com',
-  },
-];
-
-export const INITIAL_CERTIFICATIONS: Certification[] = [
-    { id: 'cert1', name: 'IBM Full Stack Software Developer', issuer: 'IBM', isAward: false },
-    { id: 'cert2', name: 'IBM Full Stack JavaScript Developer', issuer: 'IBM', isAward: false },
-    { id: 'cert3', name: 'Microsoft Python Programming', issuer: 'Microsoft', isAward: false },
-    { id: 'cert4', name: 'Meta Frontend Developer', issuer: 'Meta', isAward: false },
-    { id: 'award1', name: 'Finalist at Smart India Hackathon (SIH) 2023', isAward: true },
-    { id: 'award2', name: 'Won Tekathon 2.0', isAward: true },
-    { id: 'award3', name: 'Lead Technical Coordinator at CUFEST-2023', isAward: true },
-    { id: 'award4', name: 'Lead Coordinator at GDSC – Chandigarh University (2022-2023)', isAward: true },
-    { id: 'award5', name: 'Secretary at Power Coders Society (2022-2023)', isAward: true },
-    { id: 'award6', name: 'Won 3rd Prize at Engineers day', isAward: true },
-    { id: 'award7', name: 'Class Representative (August-December 2022)', isAward: true },
-]
-
-export const INITIAL_BLOGS: Blog[] = [
-  {
-    id: 'blog1',
-    title: 'Why TypeScript is a Game-Changer for Large React Apps',
-    content: 'TypeScript brings static typing to JavaScript, which is incredibly powerful for large-scale applications. It helps catch errors early, improves code readability, and makes refactoring a breeze. In this post, we explore the key benefits and how to integrate it into your React workflow...',
-    author: 'Aryan Khatri',
-    date: '2024-07-15',
-    slug: 'why-typescript-is-a-game-changer',
-  },
-  {
-    id: 'blog2',
-    title: 'Mastering State Management with React Context and Hooks',
-    content: 'Global state management in React can be complex. While Redux has been a popular choice, the built-in Context API combined with hooks like `useContext` and `useReducer` offers a powerful and native solution. This article dives into practical examples of how to manage state effectively without external libraries...',
-    author: 'Aryan Khatri',
-    date: '2024-06-28',
-    slug: 'mastering-state-management',
-  },
-];
-
+export const INITIAL_EXPERIENCES: Experience[] = [];
+export const INITIAL_PROJECTS: Project[] = [];
+export const INITIAL_CERTIFICATIONS: Certification[] = [];
+export const INITIAL_BLOGS: Blog[] = [];
 export const INITIAL_MESSAGES: ContactMessage[] = [];

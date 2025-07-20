@@ -1,3 +1,4 @@
+
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import {
   persistStore,
@@ -18,7 +19,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  whitelist: ['portfolio', 'auth'],
+  whitelist: ['auth'], // Only persist auth state. Portfolio is loaded from data.json
 };
 
 const rootReducer = combineReducers({

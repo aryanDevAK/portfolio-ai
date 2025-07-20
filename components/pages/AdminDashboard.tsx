@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { 
@@ -71,7 +72,7 @@ const AdminDashboard: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'portfolio-data.json';
+    a.download = 'data.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -89,7 +90,7 @@ const AdminDashboard: React.FC = () => {
         if (typeof text !== 'string') throw new Error("File could not be read");
         const data = JSON.parse(text);
         dispatch(setPortfolio(data));
-        alert('Data imported successfully! Your changes have been saved to your browser.');
+        alert('Data imported successfully! Your changes are now loaded in the editor.');
       } catch (error) {
         console.error('Error importing data:', error);
         alert('Failed to import data. Please ensure it is a valid portfolio JSON file.');
@@ -222,27 +223,33 @@ const DataManagementSection: React.FC<{onExport: ()=>void, onImport: (e: React.C
       <h2 className="text-2xl font-bold mb-4">Data Management</h2>
       <Card>
         <CardHeader>
-          <CardTitle>Export & Import Portfolio Data</CardTitle>
+          <CardTitle>Publishing & Drafts</CardTitle>
           <CardDescription>
-            To make your changes visible to all users, export the data and give the generated JSON file to a developer to update the live site.
-            Importing allows you to load previously saved data to continue your work.
+            Your site loads its content from a `data.json` file. To permanently save changes for all visitors, you must export the new data file and redeploy your site.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <h3 className="text-lg font-semibold mb-2">Export Data</h3>
-            <p className="text-sm text-muted-foreground mb-4">Download all portfolio content (About, Experience, Projects, Certifications, Blogs) as a single JSON file. Contact messages will not be included.</p>
-            <Button onClick={onExport}>Export to JSON</Button>
+            <h3 className="text-lg font-semibold mb-2">Publish Changes</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Click to download the current state of your portfolio as a `data.json` file. 
+              Replace the existing `data.json` in your project with this new file, then commit and redeploy your site to publish the changes for all visitors.
+            </p>
+            <Button onClick={onExport}>Export to JSON for Publishing</Button>
           </div>
           <div className="border-t pt-6">
-            <h3 className="text-lg font-semibold mb-2">Import Data</h3>
-            <p className="text-sm text-muted-foreground mb-4">Load portfolio content from a previously exported JSON file. This will overwrite any changes currently saved in your browser.</p>
+            <h3 className="text-lg font-semibold mb-2">Save/Load a Draft</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Use Import to load a previously exported JSON file to continue editing. This is useful for saving your progress without publishing.
+            </p>
             <input type="file" accept=".json" onChange={onImport} className="hidden" ref={importInputRef} />
             <Button variant="outline" onClick={() => importInputRef.current?.click()}>Import from JSON</Button>
           </div>
         </CardContent>
         <CardFooter>
-          <p className="text-xs text-muted-foreground">Note: Your changes are automatically saved in your browser. Use the Export button to create a file with your final changes for deployment.</p>
+          <p className="text-xs text-muted-foreground">
+            <b>Important:</b> Changes made in the admin panel are temporary and will be lost if you refresh the page. Use the export/import feature to save and load drafts.
+          </p>
         </CardFooter>
       </Card>
     </div>

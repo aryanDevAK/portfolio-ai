@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -11,12 +12,38 @@ import BlogPostPage from './components/pages/BlogPostPage';
 import ContactPage from './components/pages/ContactPage';
 import AdminLogin from './components/pages/AdminLogin';
 import AdminDashboard from './components/pages/AdminDashboard';
-import { useAppSelector } from './store/hooks';
+import { useAppSelector, useAppDispatch } from './store/hooks';
+import { setPortfolio } from './store/portfolioSlice';
 import { AnimatePresence } from 'framer-motion';
 
 const App: React.FC = () => {
   const { isLoggedIn } = useAppSelector((state) => state.auth);
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/data.json');
+        const data = await response.json();
+        dispatch(setPortfolio(data));
+      } catch (error) {
+        console.error("Failed to load portfolio data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-background text-foreground">
+        <div className="text-lg font-medium">Loading Portfolio...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
